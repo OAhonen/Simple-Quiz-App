@@ -1,18 +1,11 @@
 import { Component } from '@angular/core';
+import { PlayComponent } from './play/play.component';
 
 @Component({
   selector: 'app-root',
-  template: `<h1>
-  Welcome to play {{title}}!
-  </h1>
-  <nav>
-  <a routerLink="/home" routerLinkActive="active">Home</a>
-  <a routerLink="/play" routerLinkActive="active">Play</a>
-  </nav>
-  <div>
-  <router-outlet></router-outlet>
-  </div>`,
-  styles: ['.active { background-color: lightgray }']
+  template: `<h1>{{title}}</h1>
+  <app-play></app-play>`,
+  styles: []
 })
 export class AppComponent {
   title = 'Simple Quiz App';
