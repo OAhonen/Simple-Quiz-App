@@ -4,5 +4,6 @@ export interface Question {
   difficulty: string;
   question: string;
   correct_answer: string;
-  incorrect_answers: [];
+  incorrect_answers: any[];
+  all_answers: any[];
 }
