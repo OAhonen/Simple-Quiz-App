@@ -7,7 +7,8 @@ import { PlayService } from '../playservice';
   template: `
   <div *ngIf="!quizOver">Question {{curQuestionIndex + 1}} of {{questions.length}}</div>
   <div *ngIf="quizOver">Quiz finished!</div>
-  <div *ngIf="quizOver">You got {{correctAnswers}} correct answers out of {{questions.length}} questions.</div>
+  <div *ngIf="quizOver">You got {{correctAnswers}} correct answers out of {{questions.length}} questions.<br/>
+  <button (click)="refresh()">Play again</button></div>
 
   <div *ngFor="let question of questions; let i = index;">
   <div *ngIf="curQuestionIndex === i">
@@ -42,7 +43,7 @@ export class PlayComponent implements OnInit {
     });
   }
 
-  shuffle(array) {
+  shuffle(array): void {
     array.sort(() => Math.random() - 0.5);
   }
 
@@ -61,6 +62,10 @@ export class PlayComponent implements OnInit {
     if (this.curQuestionIndex === this.questions.length) {
       this.quizOver = true;
     }
+  }
+
+  refresh(): void {
+    window.location.reload();
   }
 
 }
