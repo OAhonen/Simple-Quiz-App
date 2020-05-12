@@ -4,7 +4,13 @@ import { PlayComponent } from './play/play.component';
 @Component({
   selector: 'app-root',
   template: `<h1>{{title}}</h1>
-  <app-play></app-play>`,
+  <nav>
+  <a routerLink="/play" routerLinkActive="active">Play</a>
+  <a routerLink="/settings" routerLinkActive="active">Settings</a>
+  </nav>
+  <div>
+  <router-outlet></router-outlet>
+  </div>`,
   styles: []
 })
 export class AppComponent {
