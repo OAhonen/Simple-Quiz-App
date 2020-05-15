@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { PlayComponent } from './play/play.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PlayService } from './playservice';
 import { SettingsComponent } from './settings/settings.component';
 
@@ -19,6 +19,7 @@ import { SettingsComponent } from './settings/settings.component';
     BrowserModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
       {path: 'play', component: PlayComponent},
       {path: 'settings', component: SettingsComponent}
