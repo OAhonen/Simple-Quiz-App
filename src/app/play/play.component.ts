@@ -88,7 +88,11 @@ export class PlayComponent implements OnInit {
     if (this.randomNumber <= 7) {
       this.hintText = 'Correct answer might be ' + this.questions[this.curQuestionIndex].correct_answer + '.';
     } else {
-      this.hintText = 'Correct answer might be ' + this.questions[this.curQuestionIndex].all_answers[0] + '.';
+      if (this.questions[this.curQuestionIndex].all_answers[0] !== this.questions[this.curQuestionIndex].correct_answer) {
+        this.hintText = 'Correct answer might be ' + this.questions[this.curQuestionIndex].all_answers[0] + '.';
+      } else {
+        this.hintText = 'Correct answer might be ' + this.questions[this.curQuestionIndex].all_answers[1] + '.';
+      }
     }
 
     this.lifelines--;
