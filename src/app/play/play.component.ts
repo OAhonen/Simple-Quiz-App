@@ -15,7 +15,7 @@ import { PlayService } from '../playservice';
       <h3>{{question.question}}</h3>
       <ul>
         <li
-          *ngFor="let answer of question.all_answers"
+          *ngFor="let answer of question.all_answers;"
           (click)="clicked(answer)">{{answer}}</li>
       </ul>
     </div>
@@ -24,9 +24,10 @@ import { PlayService } from '../playservice';
   <div>Lifelines remaining: {{lifelines}}</div>
   <div *ngIf="lifelines > 0">
     <button (click)="showhint()">Show hint</button>
+    <button (click)="removeAnswer()">Remove answer</button>
   </div>
 
-  <div *ngIf="lifelineClicked">{{hintText}}</div>`
+  <div *ngIf="hinttextClicked">{{hintText}}</div>`
 })
 export class PlayComponent implements OnInit {
   questions: Question[] = [];
@@ -34,9 +35,8 @@ export class PlayComponent implements OnInit {
   curQuestionIndex: number;
   quizOver: boolean;
   lifelines: number;
-  randomNumber: number;
   hintText: string;
-  lifelineClicked: boolean;
+  hinttextClicked: boolean;
 
   constructor(private playService: PlayService) { }
 
@@ -45,7 +45,7 @@ export class PlayComponent implements OnInit {
     this.curQuestionIndex = 0;
     this.lifelines = 2;
     this.quizOver = false;
-    this.lifelineClicked = false;
+    this.hinttextClicked = false;
     this.playService.fetchQuestions((result) => {
       this.questions = result;
       for (const question of this.questions) {
@@ -64,7 +64,7 @@ export class PlayComponent implements OnInit {
     console.log(answer);
     console.log(this.questions[this.curQuestionIndex].correct_answer);
 
-    this.lifelineClicked = false;
+    this.hinttextClicked = false;
 
     if (answer === this.questions[this.curQuestionIndex].correct_answer) {
       console.log('yes');
@@ -84,19 +84,41 @@ export class PlayComponent implements OnInit {
   }
 
   showhint() {
-    this.randomNumber = (Math.floor(Math.random() * 10) + 1);
-    if (this.randomNumber <= 7) {
+    const randomNumber = (Math.floor(Math.random() * 10) + 1);
+    if (randomNumber <= 7) {
       this.hintText = 'Correct answer might be ' + this.questions[this.curQuestionIndex].correct_answer + '.';
     } else {
-      if (this.questions[this.curQuestionIndex].all_answers[0] !== this.questions[this.curQuestionIndex].correct_answer) {
+      if (this.questions[this.curQuestionIndex].all_answers[0] !== this.questions[this.curQuestionIndex].correct_answer &&
+        this.questions[this.curQuestionIndex].all_answers[0] !== undefined) {
         this.hintText = 'Correct answer might be ' + this.questions[this.curQuestionIndex].all_answers[0] + '.';
       } else {
-        this.hintText = 'Correct answer might be ' + this.questions[this.curQuestionIndex].all_answers[1] + '.';
+        if (this.questions[this.curQuestionIndex].all_answers[1] !== undefined) {
+          this.hintText = 'Correct answer might be ' + this.questions[this.curQuestionIndex].all_answers[1] + '.';
+        } else {
+          this.hintText = 'Correct answer might be ' + this.questions[this.curQuestionIndex].all_answers[2] + '.';
+        }
       }
     }
 
     this.lifelines--;
-    this.lifelineClicked = true;
+    this.hinttextClicked = true;
+  }
+
+  removeAnswer() {
+    let randomNumber = (Math.floor(Math.random() * 4));
+    let removed = false;
+
+    while (!removed) {
+      if ((this.questions[this.curQuestionIndex].all_answers[randomNumber] !==
+        this.questions[this.curQuestionIndex].correct_answer) &&
+        (this.questions[this.curQuestionIndex].all_answers[randomNumber] !== undefined)) {
+          delete this.questions[this.curQuestionIndex].all_answers[randomNumber];
+          this.lifelines--;
+          removed = true;
+      } else {
+        randomNumber = (Math.floor(Math.random() * 4));
+      }
+    }
   }
 
 }
