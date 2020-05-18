@@ -15,7 +15,7 @@ import { of } from 'rxjs';
   </select>
   <br/>
 
-  <label for="amount">Amount</label>
+  <label for="amount">Amount of questions</label>
   <select formControlName="amount" id="amount">
     <option *ngFor="let a of amount; let i = index" [value]="amount[i].id">
       {{amount[i].name}}

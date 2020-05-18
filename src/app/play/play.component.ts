@@ -6,8 +6,7 @@ import { PlayService } from '../playservice';
   selector: 'app-play',
   template: `
   <div *ngIf="!quizOver">Question {{curQuestionIndex + 1}} of {{questions.length}}</div>
-  <div *ngIf="quizOver">Quiz finished!</div>
-  <div *ngIf="quizOver">You got {{correctAnswers}} correct answers out of {{questions.length}} questions.<br/>
+  <div *ngIf="quizOver">Quiz finished! <br/>
   <button (click)="refresh()">Play again</button></div>
 
   <div *ngFor="let question of questions; let i = index;">
@@ -27,7 +26,26 @@ import { PlayService } from '../playservice';
     <button (click)="removeAnswer()">Remove answer</button>
   </div>
 
-  <div *ngIf="hinttextClicked">{{hintText}}</div>`
+  <div *ngIf="hinttextClicked">{{hintText}}</div>
+
+  <div *ngIf="quizOver">
+    <div *ngIf="!showResults">
+      <button (click)="showResultsClicked()">Show results</button>
+    </div>
+    <div *ngIf="showResults">
+      <button (click)="showResultsClicked()">Hide results</button>
+    </div>
+  </div>
+
+  <div *ngIf="showResults">
+    <h2>Results</h2>
+    You got {{correctAnswers}} correct answers out of {{questions.length}} questions.<br/><br/>
+    <div *ngFor="let answer of userAnswers; let i = index;">
+      <b>Question:</b> {{decodeHtml(questions[i].question)}} <br/>
+      <b>Correct answer:</b> {{decodeHtml(questions[i].correct_answer)}} <br/>
+      <b>You answered:</b> {{decodeHtml(answer)}} <br/><br/>
+    </div>
+  </div>`
 })
 export class PlayComponent implements OnInit {
   questions: Question[] = [];
@@ -37,6 +55,8 @@ export class PlayComponent implements OnInit {
   lifelines: number;
   hintText: string;
   hinttextClicked: boolean;
+  userAnswers: string[] = [];
+  showResults = false;
 
   constructor(private playService: PlayService) { }
 
@@ -65,6 +85,10 @@ export class PlayComponent implements OnInit {
     return txt.value;
   }
 
+  showResultsClicked() {
+    this.showResults = !this.showResults;
+  }
+
   shuffle(array): void {
     array.sort(() => Math.random() - 0.5);
   }
@@ -81,6 +105,7 @@ export class PlayComponent implements OnInit {
     } else {
       console.log('no');
     }
+    this.userAnswers.push(answer);
     this.curQuestionIndex++;
 
     if (this.curQuestionIndex === this.questions.length) {
