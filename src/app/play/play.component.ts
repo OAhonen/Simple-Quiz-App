@@ -26,7 +26,7 @@ import { PlayService } from '../playservice';
     <button (click)="removeAnswer()">Remove answer</button>
   </div>
 
-  <div *ngIf="hinttextClicked">{{hintText}}</div>
+  <div *ngIf="hinttextClicked">{{decodeHtml(hintText)}}</div>
 
   <div *ngIf="quizOver">
     <div *ngIf="!showResults">
