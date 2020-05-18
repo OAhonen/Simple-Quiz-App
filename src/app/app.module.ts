@@ -22,7 +22,8 @@ import { SettingsComponent } from './settings/settings.component';
     ReactiveFormsModule,
     RouterModule.forRoot([
       {path: 'play', component: PlayComponent},
-      {path: 'settings', component: SettingsComponent}
+      {path: 'settings', component: SettingsComponent},
+      {path: '', redirectTo: '/play', pathMatch: 'full'}
     ])
   ],
   providers: [PlayService],
