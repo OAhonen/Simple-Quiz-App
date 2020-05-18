@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { of } from 'rxjs';
 
+/**
+ * Settings-component.
+ */
 @Component({
   selector: 'app-settings',
   template: `
   <form [formGroup]="form" (ngSubmit)="submit()">
 
+  <!-- Difficulty. -->
   <label for="difficulties">Difficulty:&nbsp;</label>
   <select formControlName="difficulties" id="difficulties">
     <option *ngFor="let difficulty of difficulties; let i = index" [value]="difficulties[i].id">
@@ -15,6 +19,7 @@ import { of } from 'rxjs';
   </select>
   <br/>
 
+  <!-- Amount of questions. -->
   <label for="amount">Amount of questions:&nbsp;</label>
   <select formControlName="amount" id="amount">
     <option *ngFor="let a of amount; let i = index" [value]="amount[i].id">
@@ -23,6 +28,7 @@ import { of } from 'rxjs';
   </select>
   <br/>
 
+  <!-- Category. -->
   <label for="categories">Category:&nbsp;</label>
   <select formControlName="categories" id="categories">
     <option *ngFor="let category of categories; let i = index" [value]="categories[i].id">
@@ -43,6 +49,10 @@ export class SettingsComponent implements OnInit {
   categories = [];
   saved = false;
 
+  /**
+   * Constructor. Set difficulties, amounts and categories to form.
+   * @param formBuilder FormBuilder
+   */
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
       difficulties: [''],
@@ -50,6 +60,9 @@ export class SettingsComponent implements OnInit {
       categories: ['']
     });
 
+    /**
+     * If user hasn't changed settings, set difficulty to easy. Otherwise get difficulty from LocalStorage.
+     */
     of(this.getDifficulties()).subscribe(difficulties => {
       this.difficulties = difficulties;
       if (localStorage.getItem('difficulty') !== null) {
@@ -59,6 +72,10 @@ export class SettingsComponent implements OnInit {
       }
     });
 
+    /**
+     * If user hasn't changed settings, set amount of questions to 5.
+     * Otherwise get amount of questions from LocalStorage.
+     */
     of(this.getAmount()).subscribe(amount => {
       this.amount = amount;
       if (localStorage.getItem('amount') !== null) {
@@ -68,6 +85,10 @@ export class SettingsComponent implements OnInit {
       }
     });
 
+    /**
+     * If user hasn't changed settings, set category to General knowledge.
+     * Otherwise get category from LocalStorage.
+     */
     of(this.getCategories()).subscribe(categories => {
       this.categories = categories;
       if (localStorage.getItem('category') !== null) {
@@ -78,6 +99,9 @@ export class SettingsComponent implements OnInit {
     });
   }
 
+  /**
+   * Difficulties and their ids.
+   */
   getDifficulties() {
     return [
       { id: 'easy', name: 'Easy' },
@@ -86,6 +110,9 @@ export class SettingsComponent implements OnInit {
     ];
   }
 
+  /**
+   * Amount of questions and their ids.
+   */
   getAmount() {
     return [
       { id: '5', name: '5' },
@@ -94,6 +121,9 @@ export class SettingsComponent implements OnInit {
     ];
   }
 
+  /**
+   * Categories and their ids.
+   */
   getCategories() {
     return [
       { id: '9', name: 'General knowledge' },
@@ -107,6 +137,9 @@ export class SettingsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Save settings to LocalStorage.
+   */
   submit() {
     console.log(this.form.value);
     localStorage.setItem('amount', this.form.value.amount);

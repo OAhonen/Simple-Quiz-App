@@ -1,3 +1,6 @@
+/**
+ * Question's variables.
+ */
 export interface Question {
   category: string;
   type: string;

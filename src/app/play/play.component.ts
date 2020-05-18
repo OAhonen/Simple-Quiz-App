@@ -2,13 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { Question } from '../question';
 import { PlayService } from '../playservice';
 
+/**
+ * Component, where the playing happens.
+ */
 @Component({
   selector: 'app-play',
   template: `
+  <!-- Show question's index, if quiz isn't over. -->
   <div *ngIf="!quizOver" class="questionNumber">Question {{curQuestionIndex + 1}} of {{questions.length}}</div>
+
+  <!-- If quiz is over, show the "Play again" -button. -->
   <div *ngIf="quizOver" class="quizFinished">Quiz finished! <br/>
   <button (click)="refresh()">Play again</button></div><br/>
 
+  <!-- Show question and answers. -->
   <div *ngFor="let question of questions; let i = index;">
     <div *ngIf="curQuestionIndex === i">
       <h3>{{decodeHtml(question.question)}}</h3>
@@ -20,14 +27,17 @@ import { PlayService } from '../playservice';
     </div>
   </div>
 
+  <!-- Show lifelines, if quiz isn't over. -->
   <div *ngIf="!quizOver" class="lifelineText">Lifelines remaining: {{lifelines}}</div>
   <div *ngIf="lifelines > 0 && !quizOver">
     <button (click)="showhint()">Show hint</button>&nbsp;
     <button (click)="removeAnswer()">Remove answer</button>
   </div>
 
+  <!-- Show hint text, if user clicked "Show hint" -button. -->
   <div *ngIf="hinttextClicked" class="hintText">{{decodeHtml(hintText)}}</div>
 
+  <!-- If quiz is over, show/hide results. -->
   <div *ngIf="quizOver">
     <div *ngIf="!showResults">
       <button (click)="showResultsClicked()">Show results</button>
@@ -37,6 +47,7 @@ import { PlayService } from '../playservice';
     </div>
   </div>
 
+  <!-- Show results. -->
   <div *ngIf="showResults">
     <h2>Results</h2>
     You got {{correctAnswers}} correct answers out of {{questions.length}} questions.<br/><br/>
@@ -48,6 +59,7 @@ import { PlayService } from '../playservice';
   </div>`,
   styleUrls: ['./play.component.css']
 })
+
 export class PlayComponent implements OnInit {
   questions: Question[] = [];
   correctAnswers: number;
@@ -59,8 +71,15 @@ export class PlayComponent implements OnInit {
   userAnswers: string[] = [];
   showResults = false;
 
+  /**
+   * Constructor.
+   * @param playService Service, which is used to fetch questions.
+   */
   constructor(private playService: PlayService) { }
 
+  /**
+   * Define variables and fetch questions.
+   */
   ngOnInit(): void {
     this.correctAnswers = 0;
     this.curQuestionIndex = 0;
@@ -77,6 +96,11 @@ export class PlayComponent implements OnInit {
     });
   }
 
+  /**
+   * Used to "decode" questions, answers and hinttexts. When fetching data from opentdb.com, sometimes
+   * there are "&quot" marks in the data, so this function removes them.
+   * @param html Text to be decoded.
+   */
   decodeHtml(html) {
     if (html === undefined) {
       return null;
@@ -86,14 +110,25 @@ export class PlayComponent implements OnInit {
     return txt.value;
   }
 
+  /**
+   * Show/hide results.
+   */
   showResultsClicked() {
     this.showResults = !this.showResults;
   }
 
+  /**
+   * Shuffle the array, where are correct and incorrect answers.
+   * @param array Array, which includes correct and incorrect answers.
+   */
   shuffle(array): void {
     array.sort(() => Math.random() - 0.5);
   }
 
+  /**
+   * Called, when user clicks one of the answers.
+   * @param answer Answer, which was clicked.
+   */
   clicked(answer: string) {
     console.log(answer);
     console.log(this.questions[this.curQuestionIndex].correct_answer);
@@ -114,10 +149,17 @@ export class PlayComponent implements OnInit {
     }
   }
 
+  /**
+   * Called, when user clicks "Play again" -button.
+   */
   refresh(): void {
     window.location.reload();
   }
 
+  /**
+   * Called, when user clicks "Show hint" -button. There is around 70% chance, that the hint
+   * is correct.
+   */
   showhint() {
     const randomNumber = (Math.floor(Math.random() * 10) + 1);
     console.log(randomNumber);
@@ -140,6 +182,9 @@ export class PlayComponent implements OnInit {
     this.hinttextClicked = true;
   }
 
+  /**
+   * Called, when user clicks "Remove answer" -button. Removes one wrong answer.
+   */
   removeAnswer() {
     let randomNumber = (Math.floor(Math.random() * 4));
     let removed = false;

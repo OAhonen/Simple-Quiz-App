@@ -3,6 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Question } from './question';
 import { ItemResponse } from './itemresponse';
 
+/**
+ * PlayService, which is used to fetch data.
+ */
 @Injectable()
 export class PlayService {
   private http: HttpClient;
@@ -11,10 +14,17 @@ export class PlayService {
   difficulty = 'easy';
   category = '9';
 
+  /**
+   * Constructor.
+   * @param http HttpClient
+   */
   constructor(http: HttpClient) {
     this.http = http;
   }
 
+  /**
+   * If settings have been changed, get settings-data from LocalStorage.
+   */
   checkStorage() {
     if (localStorage.getItem('amount') !== null) {
       this.amount = localStorage.getItem('amount');
@@ -27,6 +37,10 @@ export class PlayService {
     }
   }
 
+  /**
+   * Fetch data from opentdb.com.
+   * @param callBackFunction Function called from PlayComponent.
+   */
   fetchQuestions(callBackFunction: (result: Question[]) => void): void {
     this.checkStorage();
     this.http.get<ItemResponse>(`
