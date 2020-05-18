@@ -7,7 +7,7 @@ import { of } from 'rxjs';
   template: `
   <form [formGroup]="form" (ngSubmit)="submit()">
 
-  <label for="difficulties">Difficulty</label>
+  <label for="difficulties">Difficulty:&nbsp;</label>
   <select formControlName="difficulties" id="difficulties">
     <option *ngFor="let difficulty of difficulties; let i = index" [value]="difficulties[i].id">
       {{difficulties[i].name}}
@@ -15,7 +15,7 @@ import { of } from 'rxjs';
   </select>
   <br/>
 
-  <label for="amount">Amount of questions</label>
+  <label for="amount">Amount of questions:&nbsp;</label>
   <select formControlName="amount" id="amount">
     <option *ngFor="let a of amount; let i = index" [value]="amount[i].id">
       {{amount[i].name}}
@@ -23,7 +23,7 @@ import { of } from 'rxjs';
   </select>
   <br/>
 
-  <label for="categories">Category</label>
+  <label for="categories">Category:&nbsp;</label>
   <select formControlName="categories" id="categories">
     <option *ngFor="let category of categories; let i = index" [value]="categories[i].id">
       {{categories[i].name}}

@@ -3,15 +3,17 @@ import { PlayComponent } from './play/play.component';
 
 @Component({
   selector: 'app-root',
-  template: `<h1>{{title}}</h1>
+  template: `
+  <div class="toparea"><h1>{{title}}</h1>
   <nav>
-  <a routerLink="/play" routerLinkActive="active">Play</a>
+  <a routerLink="/play" routerLinkActive="active">Play</a>&nbsp;
   <a routerLink="/settings" routerLinkActive="active">Settings</a>
   </nav>
-  <div>
+  </div>
+  <div class="mainarea">
   <router-outlet></router-outlet>
   </div>`,
-  styles: []
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   title = 'Simple Quiz App';

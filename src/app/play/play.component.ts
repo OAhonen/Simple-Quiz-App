@@ -5,9 +5,9 @@ import { PlayService } from '../playservice';
 @Component({
   selector: 'app-play',
   template: `
-  <div *ngIf="!quizOver">Question {{curQuestionIndex + 1}} of {{questions.length}}</div>
-  <div *ngIf="quizOver">Quiz finished! <br/>
-  <button (click)="refresh()">Play again</button></div>
+  <div *ngIf="!quizOver" class="questionNumber">Question {{curQuestionIndex + 1}} of {{questions.length}}</div>
+  <div *ngIf="quizOver" class="quizFinished">Quiz finished! <br/>
+  <button (click)="refresh()">Play again</button></div><br/>
 
   <div *ngFor="let question of questions; let i = index;">
     <div *ngIf="curQuestionIndex === i">
@@ -20,13 +20,13 @@ import { PlayService } from '../playservice';
     </div>
   </div>
 
-  <div *ngIf="!quizOver">Lifelines remaining: {{lifelines}}</div>
+  <div *ngIf="!quizOver" class="lifelineText">Lifelines remaining: {{lifelines}}</div>
   <div *ngIf="lifelines > 0 && !quizOver">
-    <button (click)="showhint()">Show hint</button>
+    <button (click)="showhint()">Show hint</button>&nbsp;
     <button (click)="removeAnswer()">Remove answer</button>
   </div>
 
-  <div *ngIf="hinttextClicked">{{decodeHtml(hintText)}}</div>
+  <div *ngIf="hinttextClicked" class="hintText">{{decodeHtml(hintText)}}</div>
 
   <div *ngIf="quizOver">
     <div *ngIf="!showResults">
@@ -45,7 +45,8 @@ import { PlayService } from '../playservice';
       <b>Correct answer:</b> {{decodeHtml(questions[i].correct_answer)}} <br/>
       <b>You answered:</b> {{decodeHtml(answer)}} <br/><br/>
     </div>
-  </div>`
+  </div>`,
+  styleUrls: ['./play.component.css']
 })
 export class PlayComponent implements OnInit {
   questions: Question[] = [];
