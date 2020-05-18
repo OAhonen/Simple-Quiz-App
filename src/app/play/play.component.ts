@@ -12,11 +12,11 @@ import { PlayService } from '../playservice';
 
   <div *ngFor="let question of questions; let i = index;">
     <div *ngIf="curQuestionIndex === i">
-      <h3>{{question.question}}</h3>
+      <h3>{{decodeHtml(question.question)}}</h3>
       <ul>
         <li
           *ngFor="let answer of question.all_answers;"
-          (click)="clicked(answer)">{{answer}}</li>
+          (click)="clicked(answer)">{{decodeHtml(answer)}}</li>
       </ul>
     </div>
   </div>
@@ -56,6 +56,15 @@ export class PlayComponent implements OnInit {
     });
   }
 
+  decodeHtml(html) {
+    if (html === undefined) {
+      return null;
+    }
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  }
+
   shuffle(array): void {
     array.sort(() => Math.random() - 0.5);
   }
@@ -85,6 +94,7 @@ export class PlayComponent implements OnInit {
 
   showhint() {
     const randomNumber = (Math.floor(Math.random() * 10) + 1);
+    console.log(randomNumber);
     if (randomNumber <= 7) {
       this.hintText = 'Correct answer might be ' + this.questions[this.curQuestionIndex].correct_answer + '.';
     } else {
