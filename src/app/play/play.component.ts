@@ -21,8 +21,8 @@ import { PlayService } from '../playservice';
     </div>
   </div>
 
-  <div>Lifelines remaining: {{lifelines}}</div>
-  <div *ngIf="lifelines > 0">
+  <div *ngIf="!quizOver">Lifelines remaining: {{lifelines}}</div>
+  <div *ngIf="lifelines > 0 && !quizOver">
     <button (click)="showhint()">Show hint</button>
     <button (click)="removeAnswer()">Remove answer</button>
   </div>
