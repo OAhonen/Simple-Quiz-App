@@ -130,17 +130,12 @@ export class PlayComponent implements OnInit {
    * @param answer Answer, which was clicked.
    */
   clicked(answer: string) {
-    console.log(answer);
-    console.log(this.questions[this.curQuestionIndex].correct_answer);
-
     this.hinttextClicked = false;
 
     if (answer === this.questions[this.curQuestionIndex].correct_answer) {
-      console.log('yes');
       this.correctAnswers++;
-    } else {
-      console.log('no');
     }
+
     this.userAnswers.push(answer);
     this.curQuestionIndex++;
 
@@ -162,7 +157,7 @@ export class PlayComponent implements OnInit {
    */
   showhint() {
     const randomNumber = (Math.floor(Math.random() * 10) + 1);
-    console.log(randomNumber);
+
     if (randomNumber <= 7) {
       this.hintText = 'Correct answer might be ' + this.questions[this.curQuestionIndex].correct_answer + '.';
     } else {

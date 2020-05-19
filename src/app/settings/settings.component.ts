@@ -141,13 +141,9 @@ export class SettingsComponent implements OnInit {
    * Save settings to LocalStorage.
    */
   submit() {
-    console.log(this.form.value);
     localStorage.setItem('amount', this.form.value.amount);
     localStorage.setItem('difficulty', this.form.value.difficulties);
     localStorage.setItem('category', this.form.value.categories);
-    console.log(localStorage.getItem('amount'));
-    console.log(localStorage.getItem('difficulty'));
-    console.log(localStorage.getItem('category'));
     this.saved = true;
   }
 
